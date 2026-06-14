@@ -1,0 +1,39 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/axios": "^0.9.36",
+    "@types/dotenv": "^6.1.1",
+    "@types/mongoose": "^5.11.96",
+    "@types/node": "^25.5.0",
+    "@types/socket.io": "^3.0.1",
+    "axios": "^1.13.6",
+    "dotenv": "^17.3.1",
+    "mongoose": "^9.7.0",
+    "socket.io": "^4.8.3",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.6",
+     "socket.io": "^4.8.3",
+     "mongoose": "^9.7.0",
+    "dotenv": "^17.3.1",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "firebase-admin": "^13.7.0",
+    "http": "^0.0.1-security",
+    "tsx": "^4.21.0"
+  }
+}

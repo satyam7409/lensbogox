@@ -1,0 +1,12 @@
+node_modules/
+server/src/config/serviceAccountKey.json
+.env
+.env.local
+.env.*.local
+client/.env
+server/.env
+client/node_modules
+server/node_modules
+client/build/
+client/dist/
+*.log
