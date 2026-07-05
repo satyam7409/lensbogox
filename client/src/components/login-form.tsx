@@ -57,12 +57,14 @@ export function LoginForm({
         );
       }
 
+      console.log(" am here");
+
       const result = await signInWithPhoneNumber(
         auth,
         `+91${phone}`,
         recaptchaRef.current,
       );
-
+      console.log("result",result);      
       confirmResultRef.current = result;
       setStep("otp");
     } catch (err: any) {

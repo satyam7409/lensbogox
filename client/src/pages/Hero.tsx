@@ -4,6 +4,8 @@ import {
   ArrowRight,
   Zap,
   CheckCircle2,
+  Star,
+  Users,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import PostFormModal from "@/components/PostFormModal";
@@ -18,7 +20,7 @@ export default function LandingPage() {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
   const isLoggedIn = !!user;
-  // smooth scroll to posts section
+
   const scrollToPosts = () => {
     document.getElementById("posts-section")?.scrollIntoView({
       behavior: "smooth",
@@ -33,6 +35,7 @@ export default function LandingPage() {
     }
     setModalOpen(true);
   };
+
   return (
     <div
       className="min-h-screen font-sans overflow-x-hidden"
@@ -42,8 +45,8 @@ export default function LandingPage() {
       <Navbar />
 
       {/* ── HERO ────────────────────────────────────────────────── */}
-      <section className="pt-28 pb-20 px-6 md:px-12 lg:px-20">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 lg:gap-14 items-center">
+      <section className="pt-24 pb-16 px-6 md:px-12 lg:px-20">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 lg:gap-14 items-center">
           {/* Left — copy */}
           <div className="flex flex-col gap-6 order-2 md:order-1">
             {/* pill */}
@@ -93,7 +96,6 @@ export default function LandingPage() {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3">
-              {/* Get BOGO → scrolls to posts section */}
               <button
                 onClick={scrollToPosts}
                 className="flex items-center justify-center gap-2 px-6 h-12
@@ -111,7 +113,6 @@ export default function LandingPage() {
                 />
               </button>
 
-              {/* Post BOGO → opens modal */}
               <button
                 onClick={openPostModal}
                 className="flex items-center justify-center gap-2 px-6 h-12
@@ -127,13 +128,55 @@ export default function LandingPage() {
                 Post BOGO
               </button>
             </div>
+
+            {/* trust / stats strip — fills the empty space under CTAs */}
+            {/* <div
+              className="flex items-center gap-5 sm:gap-7 pt-5 mt-1 flex-wrap"
+              style={{ borderTop: "1px solid #e2f0f3" }}
+            >
+              <div className="flex items-center gap-2">
+                <div className="flex -space-x-2">
+                  {["#3BBFD4", "#F5903D", "#2AA8B8", "#e07020"].map((c, i) => (
+                    <div
+                      key={i}
+                      className="w-7 h-7 rounded-full border-2 border-white"
+                      style={{ background: c }}
+                    />
+                  ))}
+                </div>
+                <span
+                  className="text-xs font-semibold"
+                  style={{ color: "#5a7a85" }}
+                >
+                  1,200+ matched
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <Star size={14} style={{ fill: "#F5903D", color: "#F5903D" }} />
+                <span
+                  className="text-xs font-semibold"
+                  style={{ color: "#5a7a85" }}
+                >
+                  4.8 rating
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <Users size={14} style={{ color: "#3BBFD4" }} />
+                <span
+                  className="text-xs font-semibold"
+                  style={{ color: "#5a7a85" }}
+                >
+                  Active in 30+ cities
+                </span>
+              </div>
+            </div> */}
           </div>
 
-          {/* Right — hero logo */}
-          <div className="flex items-center justify-center w-full order-1 md:order-2 min-h-[320px] md:min-h-0">
-            <div
-              className="relative flex items-center justify-center w-full max-w-[520px] aspect-square mx-auto"
-            >
+          {/* Right — hero visual */}
+          <div className="flex items-center justify-center w-full order-1 md:order-2 min-h-[360px] md:min-h-0">
+            <div className="relative flex items-center justify-center w-full max-w-[520px] aspect-square mx-auto">
               {/* soft glow */}
               <div
                 className="absolute inset-[8%] rounded-full blur-3xl opacity-60 pointer-events-none"
@@ -153,19 +196,26 @@ export default function LandingPage() {
                 aria-hidden
               />
 
-              {/* logo — scales with column, fills hero visually */}
-              <img
+              {/* logo */}
+              {/* <img
                 src="/remove.png"
                 alt="LensBogo — BOGO partner matching"
-                className="relative z-10 w-[78%] max-w-[440px] h-auto object-contain drop-shadow-[0_20px_40px_rgba(59,191,212,0.18)]"
-              />
+                className="relative z-10 w-[62%] max-w-[340px] h-auto object-contain drop-shadow-[0_20px_40px_rgba(59,191,212,0.18)]"
+              /> */}
+
+              {/* logo */}
+<img
+  src="/remove.png"
+  alt="LensBogo — BOGO partner matching"
+  className="relative z-10 w-[62%] max-w-[340px] h-auto object-contain drop-shadow-[0_20px_40px_rgba(59,191,212,0.18)] transition-transform duration-500 ease-out hover:scale-[1.035] hover:drop-shadow-[0_24px_48px_rgba(59,191,212,0.26)] motion-reduce:transition-none motion-reduce:hover:scale-100"
+/>
 
               {/* floating savings badge */}
               <div
                 className="absolute z-20 text-white text-xs font-bold px-3.5 py-2 rounded-full whitespace-nowrap"
                 style={{
-                  top: "8%",
-                  right: "6%",
+                  top: "6%",
+                  right: "2%",
                   background: "linear-gradient(135deg, #F5903D, #e07020)",
                   boxShadow: "0 6px 20px rgba(245,144,61,0.45)",
                 }}
@@ -178,7 +228,6 @@ export default function LandingPage() {
       </section>
 
       {/* ── POSTS SECTION ─────────────────────────────────────── */}
-
       {isLoggedIn ? <PostsSection refreshKey={postsRefreshKey} /> : <></>}
 
       {/* ── HOW IT WORKS ──────────────────────────────────────── */}
@@ -340,7 +389,10 @@ export default function LandingPage() {
               alt="LensBogo"
               className="w-10 h-10 md:w-11 md:h-11 object-contain shrink-0"
             />
-            <span className="text-base md:text-lg font-bold" style={{ color: "#1a2e35" }}>
+            <span
+              className="text-base md:text-lg font-bold"
+              style={{ color: "#1a2e35" }}
+            >
               Lens<span style={{ color: "#F5903D" }}>Bogo</span>
             </span>
           </div>
