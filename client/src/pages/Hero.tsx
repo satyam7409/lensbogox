@@ -4,8 +4,6 @@ import {
   ArrowRight,
   Zap,
   CheckCircle2,
-  Star,
-  Users,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import PostFormModal from "@/components/PostFormModal";
