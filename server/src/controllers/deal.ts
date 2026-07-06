@@ -6,64 +6,70 @@ import { ApiError } from "../utils/APIError.js";
 import { ApiResponse } from "../utils/APIResponse.js";
 import { getIO } from "../socket/socket.js";
 
-export const createDeal = asyncHandler(async(req:Request, res:Response)=>{
-   const {postId} = req.body;
-   if(!postId){
-      throw new ApiError(500,"No postID")
-   }
-   const post = await Post.findById(postId);
-   if(!post){
-    throw new ApiError(404,"No post found"); 
-   }
-
-   if (post.userId.toString() === req.userId) {
-    throw new ApiError(400, "Cannot connect to your own post")
+export const createDeal = asyncHandler(async (req: Request, res: Response) => {
+  const { postId } = req.body;
+  if (!postId) {
+    throw new ApiError(500, "No postID");
+  }
+  const post = await Post.findById(postId);
+  if (!post) {
+    throw new ApiError(404, "No post found");
   }
 
-const existingDeal = await Deal.findOne({postId:postId,joinerUserId:req.userId!});
-    if (existingDeal) {
-    return res.status(200).json(
-      new ApiResponse(200, existingDeal._id.toString(), "Deal already exists")
-    )
+  if (post.userId.toString() === req.userId) {
+    throw new ApiError(400, "Cannot connect to your own post");
   }
 
-   const newDeal = await Deal.create({
-      postId,
-      hostUserId:   post.userId,
-      joinerUserId: req.userId!
-    })
+  const existingDeal = await Deal.findOne({
+    postId: postId,
+    joinerUserId: req.userId!,
+  });
+  if (existingDeal) {
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          existingDeal._id.toString(),
+          "Deal already exists",
+        ),
+      );
+  }
 
-    if(!newDeal){
-      throw new ApiError(500,"No newDeal Created");
-    }
+  const newDeal = await Deal.create({
+    postId,
+    hostUserId: post.userId,
+    joinerUserId: req.userId!,
+  });
 
-    const dealId = newDeal._id.toString();
-    const hostId = post.userId.toString();
+  if (!newDeal) {
+    throw new ApiError(500, "No newDeal Created");
+  }
 
-    getIO()?.to(`user:${hostId}`).emit("new_deal", {
-      dealId,
-      joinerId: req.userId,
-    });
+  const dealId = newDeal._id.toString();
+  const hostId = post.userId.toString();
 
-    res.status(200).json(new ApiResponse(200, dealId, "Deal id generated"));
-})
+  getIO()?.to(`user:${hostId}`).emit("new_deal", {
+    dealId,
+    joinerId: req.userId,
+  });
+
+  res.status(200).json(new ApiResponse(200, dealId, "Deal id generated"));
+});
 
 export const getDeals = asyncHandler(async (req: Request, res: Response) => {
   // Bug 1 fixed — ! means throw when missing
-  if (!req.userId) throw new ApiError(401, "Unauthorised")
+  if (!req.userId) throw new ApiError(401, "Unauthorised");
 
   // Bug 2 fixed — $or finds deals where user is host OR joiner
   const deals = await Deal.find({
-    $or: [
-      { hostUserId:   req.userId },
-      { joinerUserId: req.userId },
-    ],
+    $or: [{ hostUserId: req.userId }, { joinerUserId: req.userId }],
   })
-  .populate("hostUserId",   "displayName avatarInitials hasMembership")
-  .populate("joinerUserId", "displayName avatarInitials hasMembership")
-  .populate("postId",       "areaName hasMembership note")
-  .sort({ updatedAt: -1 })
+    .populate("hostUserId", "displayName avatarInitials hasMembership")
+    .populate("joinerUserId", "displayName avatarInitials hasMembership")
+    .populate("postId", "areaName hasMembership note")
+    .sort({ updatedAt: -1 });
 
   // Bug 3 fixed — no null check, just return array (empty is fine)
-  res.status(200).json(new ApiResponse(200, deals, "Deals fetched"))
-})
+  res.status(200).json(new ApiResponse(200, deals, "Deals fetched"));
+});

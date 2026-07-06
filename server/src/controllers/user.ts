@@ -26,7 +26,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     .slice(0, 2);
 
   const user = await User.findOneAndUpdate(
-    { firebaseUid: decoded.uid},
+    { firebaseUid: decoded.uid },
     {
       $set: {
         firebaseUid: decoded.uid,

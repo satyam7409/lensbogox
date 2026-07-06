@@ -5,53 +5,53 @@ import { ApiResponse } from "../utils/APIResponse.js";
 import User from "../models/user.js";
 import asyncHandler from "../utils/asynchandler.js";
 
-export const createPost = asyncHandler(async (req:Request, res:Response) => {
-  const alreadyPosted = await Post.findOne({ userId: req.userId!, status: "pending" })
-  if(alreadyPosted){
+export const createPost = asyncHandler(async (req: Request, res: Response) => {
+  const alreadyPosted = await Post.findOne({
+    userId: req.userId!,
+    status: "pending",
+  });
+  if (alreadyPosted) {
     throw new ApiError(400, "Already have a post");
   }
-    const {
-      hasMembership,
-      note,
-      lat,
-      lng,
-    } = req.body
+  const { hasMembership, note, lat, lng } = req.body;
 
-    if (!lat || !lng) throw new ApiError(400,'Location (lat, lng) is required')
-    if (hasMembership === undefined) throw new ApiError(400,'hasMembership is required')
+  if (!lat || !lng) throw new ApiError(400, "Location (lat, lng) is required");
+  if (hasMembership === undefined)
+    throw new ApiError(400, "hasMembership is required");
 
-    const post = await Post.create({
-      userId:          req.userId!,
-      hasMembership,
-      note,
-      areaName:        req.userObj!.areaName,
-      pinCode:         req.userObj!.pinCode,
-      location: {
-        type:        'Point',
-        coordinates: [parseFloat(lng), parseFloat(lat)],
-      },
-    }) 
+  const post = await Post.create({
+    userId: req.userId!,
+    hasMembership,
+    note,
+    areaName: req.userObj!.areaName,
+    pinCode: req.userObj!.pinCode,
+    location: {
+      type: "Point",
+      coordinates: [parseFloat(lng), parseFloat(lat)],
+    },
+  });
 
-    if(!post){
-        throw new ApiError(404,"Post is not creasted");
-    }
-    res.status(200).json(new ApiResponse(200,post,"Post created successfully"));
-})
+  if (!post) {
+    throw new ApiError(404, "Post is not creasted");
+  }
+  res.status(200).json(new ApiResponse(200, post, "Post created successfully"));
+});
 
-export const getPosts =  asyncHandler (async (req: Request, res: Response) => {
-  const radius = 5
-  const user = req.userObj
-  if(user == null || user.phone == null){
-    throw new ApiError(404,"Can;t find user");
+export const getPosts = asyncHandler(async (req: Request, res: Response) => {
+  const radius = 5;
+  const user = req.userObj;
+  if (user == null || user.phone == null) {
+    throw new ApiError(404, "Can;t find user");
   }
 
-  
-  
   if (!user?.location?.coordinates?.length) {
-    throw new ApiError(400, "User location not set. Please update your profile.")
+    throw new ApiError(
+      400,
+      "User location not set. Please update your profile.",
+    );
   }
 
-  const [lng, lat] = user.location.coordinates
+  const [lng, lat] = user.location.coordinates;
 
   const posts = await Post.find({
     status: "pending",
@@ -59,13 +59,17 @@ export const getPosts =  asyncHandler (async (req: Request, res: Response) => {
     location: {
       $nearSphere: {
         $geometry: {
-          type:        "Point",
+          type: "Point",
           coordinates: [lng, lat],
         },
         $maxDistance: radius * 1000,
       },
     },
-  }).select("_id areaName hasMembership note").populate("userId", "displayName")
+  })
+    .select("_id areaName hasMembership note")
+    .populate("userId", "displayName");
 
-  res.status(200).json(new ApiResponse(200, posts, "Posts fetched successfully"))
-})
+  res
+    .status(200)
+    .json(new ApiResponse(200, posts, "Posts fetched successfully"));
+});
