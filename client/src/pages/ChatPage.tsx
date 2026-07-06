@@ -159,7 +159,7 @@ export default function ChatPage() {
       <Navbar />
 
       <div className="flex flex-1 pt-[60px] max-w-[1200px] mx-auto w-full
-                      px-4 md:px-6 py-4 gap-4 min-h-0">
+                      px-4 md:px-6 py-4 gap-4 min-h-0 mt-5">
 
         <aside className={`
           flex-col w-full md:w-[320px] md:flex-shrink-0 rounded-2xl overflow-hidden
@@ -168,9 +168,9 @@ export default function ChatPage() {
         `}>
           <div className="px-5 pt-5 pb-4 border-b border-[#f0f8fb]">
             <h2 className="text-base font-bold text-[#1a2e35] mb-3">Messages</h2>
-            <p className="text-[11px] text-[#8aacb5] mb-3">
+            {/* <p className="text-[11px] text-[#8aacb5] mb-3">
               Each person who connects gets their own chat with you
-            </p>
+            </p> */}
             <div className="relative">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2
                                            text-[#8aacb5] pointer-events-none" />
@@ -189,8 +189,8 @@ export default function ChatPage() {
           <div className="flex-1 overflow-y-auto">
             {filteredChats.length === 0 ? (
               <p className="text-center text-[13px] text-[#8aacb5] py-10 px-4">
-                No conversations yet.
-                {currentUserId && " When someone connects to your post, they'll appear here."}
+                No chat yet. 
+                {currentUserId && " Create or Join post to start chat."}
               </p>
             ) : (
               filteredChats.map(chat => (
@@ -263,8 +263,7 @@ export default function ChatPage() {
           ) : (
             <div className="flex-1 flex items-center justify-center
                             text-[#8aacb5] text-[13px] px-6 text-center">
-              Select a conversation to start chatting.
-              Post owners: open Messages to see everyone who connected.
+            No Messages
             </div>
           )}
         </main>

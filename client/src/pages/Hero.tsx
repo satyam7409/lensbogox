@@ -395,7 +395,7 @@ export default function LandingPage() {
             </span>
           </div>
           <p className="text-xs" style={{ color: "#8aacb5" }}>
-            © 2025 LensBogo. Not affiliated with Lenskart.
+            © 2026 LensBogo. Not affiliated with Lenskart.
           </p>
         </div>
       </footer>

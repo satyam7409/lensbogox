@@ -294,7 +294,7 @@ export function LoginForm({
 
                   {lat !== null && lng !== null && (
                     <span className="text-xs text-muted-foreground truncate">
-                      {lat}, {lng}
+                      Location fetch successfully
                     </span>
                   )}
                 </div>
